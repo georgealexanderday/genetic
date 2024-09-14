@@ -1,9 +1,26 @@
+defmodule OneMax do
+  @behaviour Problem
+  alias Types.Chromosome
 
-# hyperparams
-genotype = fn -> for _ <- 1..1000, do: Enum.random(0..1) end
-fitness_function = fn chromosome -> Enum.sum(chromosome) end
-max_fitness = 1000
+  @impl true
+  def genotype() do
+    genes = for _ <- 1..42, do: Enum.random(0..1)
+    %Chromosome{genes: genes, size: 42}
+  end
 
-soln = Genetic.run(fitness_function, genotype, max_fitness)
+  @impl true
+  def fitness_function(chromosome) do
+    Enum.sum(chromosome.genes)
+  end
+
+  @impl true
+  @spec terminate?([Chromosome.t(), ...]) :: boolean() # this should match the behaviour?
+  def terminate?([best | _]), do: best.fitness == 42
+end
+
+
+
+
+soln = Genetic.run(OneMax)
 IO.write("\n")
 IO.inspect(soln)
