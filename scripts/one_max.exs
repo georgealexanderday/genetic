@@ -13,13 +13,15 @@ defmodule OneMax do
     Enum.sum(chromosome.genes)
   end
 
+  
+  # different approaches to termination criteria
   @impl true
-  @spec terminate?([Chromosome.t(), ...]) :: boolean() # this should match the behaviour?
-  def terminate?([best | _]), do: best.fitness == 42
+  def terminate?([best | _], _, _), do: best.fitness == 42
+  @impl true
+  def terminate?(_, generation, _), do: generation == 100
+  @impl true
+  def terminate?(_, _, temperature), do: temperature < 25
 end
-
-
-
 
 soln = Genetic.run(OneMax)
 IO.write("\n")
